@@ -5,6 +5,8 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public float velocidad = 5f;
+    [SerializeField] AudioClip sonidoMoneda;
+    [SerializeField] AudioManager manager;
 
     void Update()
     {
@@ -22,4 +24,18 @@ public class Player : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, rotacionObjetivo, Time.deltaTime * 10f);
         }
     }
+    public void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Coleccionable"))
+        {
+            manager.ReproducirSonido(sonidoMoneda);
+            Destroy(other.gameObject);
+        }
+    }
+    
+
+
+
+
+
 }

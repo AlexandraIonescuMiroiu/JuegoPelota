@@ -18,7 +18,7 @@ public class AudioManager : MonoBehaviour
         
     }
 
-   void ReproducirSonido(AudioClip clip)
+   public void ReproducirSonido(AudioClip clip)
    {
      sfx.PlayOneShot(clip); 
      //Ejecuta el clip introducido por parametro de entrada
