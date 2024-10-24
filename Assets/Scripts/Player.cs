@@ -5,11 +5,21 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public float velocidad = 5f;
+    public float fuerzaSalto = 5f;
+    private Rigidbody rb;
     [SerializeField] AudioClip sonidoMoneda;
     [SerializeField] AudioManager manager;
 
-    void Update()
+    void Start()
     {
+
+        rb = GetComponent<Rigidbody>();
+
+    }
+
+    void FixedUpdate()
+    {
+        Saltar();
         float h = Input.GetAxisRaw("Horizontal");
         float v = Input.GetAxisRaw("Vertical");
 
@@ -24,6 +34,16 @@ public class Player : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, rotacionObjetivo, Time.deltaTime * 10f);
         }
     }
+
+    private void Saltar()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            rb.AddForce(Vector3.up * fuerzaSalto, ForceMode.Impulse);
+        }
+
+    }
+    
     public void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Coleccionable"))

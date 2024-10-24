@@ -11,16 +11,23 @@ public class Coleccionable : MonoBehaviour
     public float velocidad = 5f;
     public float rangoMovimientoY = 1f;
     public float frecuencia = 1f;
+    // Debemos empezar en 0 -> SIEMPRE
     private float tiempoPasado = 0f;
+    private float posicionInicialY;
+
+    void Start()
+    {
+
+        posicionInicialY = transform.position.y;
+    }
 
     void Update()
     {
-        // Apuntes: NUNCA NORMALIZAR EL VECTOR ya que cada EJE tienen dirección y velocidad independientes.
+        // NUNCA NORMALIZAR EL VECTOR ya que cada EJE tienen dirección y velocidad independientes.
         transform.Rotate(new Vector3(velocidadRotacionX, velocidadRotacionY, velocidadRotacionZ) * Time.deltaTime);
 
         tiempoPasado += Time.deltaTime;
         float nuevaPosY = Mathf.Sin(tiempoPasado * frecuencia) * rangoMovimientoY;
-        transform.position = new Vector3(transform.position.x, nuevaPosY, transform.position.z);
+        transform.position = new Vector3(transform.position.x, posicionInicialY + nuevaPosY, transform.position.z);
     }
 }
-
