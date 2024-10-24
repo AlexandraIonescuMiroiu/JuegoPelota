@@ -4,36 +4,30 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    private float h = 0f;
+    private float v = 0f;
+
     public float velocidad = 5f;
     public float fuerzaSalto = 5f;
-    private Rigidbody rb;
+    public Rigidbody rb;
     [SerializeField] AudioClip sonidoMoneda;
     [SerializeField] AudioManager manager;
 
     void Start()
     {
 
-        rb = GetComponent<Rigidbody>();
+        //rb = GetComponent<Rigidbody>();
+        
 
     }
-
-    void FixedUpdate()
+    void Update()
     {
+        
         Saltar();
-        float h = Input.GetAxisRaw("Horizontal");
-        float v = Input.GetAxisRaw("Vertical");
+        Movement();
 
-        Vector3 movimiento = new Vector3(h, 0, v).normalized;
-
-        // Apuntes: Normalizamos para evitar velocidad diagonal mayor
-        transform.Translate(movimiento * velocidad * Time.deltaTime, Space.World);
-
-        if (movimiento != Vector3.zero)
-        {
-            Quaternion rotacionObjetivo = Quaternion.LookRotation(movimiento);
-            transform.rotation = Quaternion.Slerp(transform.rotation, rotacionObjetivo, Time.deltaTime * 10f);
-        }
     }
+ 
 
     private void Saltar()
     {
@@ -43,19 +37,51 @@ public class Player : MonoBehaviour
         }
 
     }
-    
-    public void OnTriggerEnter(Collider other)
+    private void Movement()
     {
-        if (other.gameObject.CompareTag("Coleccionable"))
+        if (Input.GetKey(KeyCode.W))
         {
-            manager.ReproducirSonido(sonidoMoneda);
-            Destroy(other.gameObject);
+          rb.AddForce(Vector3.forward, ForceMode.Force);
+        }
+        if (Input.GetKey(KeyCode.A))
+        {
+          rb.AddForce(Vector3.left, ForceMode.Force);
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+          rb.AddForce(Vector3.right, ForceMode.Force);
+        }
+        if (Input.GetKey(KeyCode.S))
+        {
+          rb.AddForce(Vector3.back, ForceMode.Force);
         }
     }
-    
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Coleccionable"))
+        {
+            manager.ReproducirSonido(sonidoMoneda);
+            Destroy(collision.gameObject);
+            Debug.Log("toquè");
+        }
 
 
+        /*public void OnTriggerEnter(Collider other)
+        {
+            if (other.gameObject.CompareTag("Coleccionable"))
+            {
+                manager.ReproducirSonido(sonidoMoneda);
+                Destroy(other.gameObject);
+                Debug.Log("toquè");
+            }
+            else
+            {
+                Debug.Log("toqué otra cosa");
 
+            }
+        }
+       */
 
-
+    }
 }
