@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Trampa
   - Coleccionable
+  - Ground
+  - FallGround
   layers:
   - Default
   - TransparentFX
