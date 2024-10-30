@@ -4,7 +4,21 @@ using UnityEngine;
 
 public class CheckpointManager : MonoBehaviour
 {
+    public static CheckpointManager Instance { get; private set; }
     private Vector3 currentCheckpoint;
+
+    void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+    }
 
     void Start()
     {
@@ -23,13 +37,17 @@ public class CheckpointManager : MonoBehaviour
         player.position = currentCheckpoint;
     }
 
-
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
             TeleportToCheckpoint(other.transform);
+            HealthManager.Instance.PlayerHit();
         }
     }
-}
 
+    public void SetCheckpoint(Vector3 newCheckpoint)
+    {
+        currentCheckpoint = newCheckpoint;
+    }
+}

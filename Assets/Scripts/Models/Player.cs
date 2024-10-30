@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Player : MonoBehaviour
 {
@@ -11,9 +12,12 @@ public class Player : MonoBehaviour
     [SerializeField] AudioClip coinSound;
     [SerializeField] AudioManager manager;
 
+    private Transform cameraTransform;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        cameraTransform = Camera.main.transform;
     }
 
     void Update()
@@ -37,19 +41,25 @@ public class Player : MonoBehaviour
         if (!Physics.Raycast(transform.position, Vector3.down, out hit, 1.1f))
         {
             groundStatus = GroundStatus.InAir;
-            Debug.DrawRay(transform.position, Vector3.down, Color.red, 1.1f);
             return;
         }
 
         if (hit.collider.CompareTag("Ground"))
         {
             groundStatus = GroundStatus.Grounded;
-            Debug.DrawRay(transform.position, Vector3.down, Color.green, 1.1f);
             return;
         }
         else
         {
             groundStatus = GroundStatus.NotGrounded;
+        }
+    }
+
+    void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("Damage"))
+        {
+            HealthManager.Instance.PlayerHit();
         }
     }
 
@@ -78,7 +88,19 @@ public class Player : MonoBehaviour
         if (direction != Vector3.zero)
         {
             direction.Normalize();
-            rb.AddForce(direction * speed, ForceMode.Force);
+            MovePlayer(direction);
         }
+    }
+
+    private void MovePlayer(Vector3 direction)
+    {
+        Vector3 cameraForward = cameraTransform.TransformDirection(Vector3.forward);
+        Vector3 cameraRight = cameraTransform.TransformDirection(Vector3.right);
+        cameraForward.y = 0;
+        cameraRight.y = 0;
+
+        Vector3 finalDirection = (cameraForward.normalized * direction.z + cameraRight.normalized * direction.x).normalized;
+
+        rb.AddForce(finalDirection * speed, ForceMode.Force);
     }
 }
