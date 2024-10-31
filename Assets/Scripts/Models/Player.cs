@@ -5,8 +5,8 @@ using TMPro;
 
 public class Player : MonoBehaviour
 {
-    public float speed = 2f;
-    public float jumpForce = 5f;
+    public float speed = 6f;
+    public float jumpForce = 6f;
     private Rigidbody rb;
     private GroundStatus groundStatus = GroundStatus.NotGrounded;
     [SerializeField] AudioClip coinSound;
@@ -19,11 +19,14 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         cameraTransform = Camera.main.transform;
     }
+    void FixedUpdate()
+    {
+        Movement();
+    }
 
     void Update()
     {
         Jump();
-        Movement();
         CheckGrounded();
     }
 
@@ -41,17 +44,20 @@ public class Player : MonoBehaviour
         if (!Physics.Raycast(transform.position, Vector3.down, out hit, 1.1f))
         {
             groundStatus = GroundStatus.InAir;
+            Debug.DrawRay(transform.position, Vector3.down * 1.1f, Color.red);
             return;
         }
 
         if (hit.collider.CompareTag("Ground"))
         {
             groundStatus = GroundStatus.Grounded;
+            Debug.DrawRay(transform.position, Vector3.down * 1.1f, Color.green);
             return;
         }
         else
         {
             groundStatus = GroundStatus.NotGrounded;
+            Debug.DrawRay(transform.position, Vector3.down * 1.1f, Color.red);
         }
     }
 

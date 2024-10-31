@@ -15,18 +15,5 @@ public class CanvasFalsoManager : MonoBehaviour
     {
         //Solo funciona en el ejecutable
         Application.Quit();
-
     }
-
-
-
-
-
-
-
-
-
-
-
-
 }

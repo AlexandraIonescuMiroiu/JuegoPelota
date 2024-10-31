@@ -15,12 +15,18 @@ public class Platform : MonoBehaviour
     private Vector3 movementDirection = Vector3.zero;
 
     [SerializeField]
-    private Vector3 rotationAxis = Vector3.zero;
+    private Vector3 rotationAxis = Vector3.up;
     [SerializeField]
     private float rotationSpeed = 100f;
 
     private float timer = 0f;
     private bool movingForward = true;
+    private Rigidbody rb;
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
 
     void Update()
     {
@@ -31,11 +37,26 @@ public class Platform : MonoBehaviour
                 break;
 
             case PlatformType.Rotating:
-                RotatePlatform();
                 break;
 
             case PlatformType.Damaging:
                 MovePlatform();
+                break;
+        }
+    }
+
+    void FixedUpdate()
+    {
+        switch (platformType)
+        {
+            case PlatformType.Moving:
+                break;
+
+            case PlatformType.Rotating:
+                RotatePlatform();
+                break;
+
+            case PlatformType.Damaging:
                 RotatePlatform();
                 break;
         }
@@ -57,15 +78,6 @@ public class Platform : MonoBehaviour
 
     void RotatePlatform()
     {
-        transform.Rotate(rotationAxis, rotationSpeed * Time.deltaTime, Space.World);
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            // Implement damage logic here
-            // Example: other.GetComponent<PlayerHealth>().TakeDamage(damageAmount);
-        }
+        rb.AddTorque(rotationAxis * rotationSpeed, ForceMode.VelocityChange);
     }
 }
