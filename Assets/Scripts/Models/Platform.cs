@@ -17,7 +17,7 @@ public class Platform : MonoBehaviour
     [SerializeField]
     private Vector3 rotationAxis = Vector3.up;
     [SerializeField]
-    private float rotationSpeed = 100f;
+    private float rotationSpeed = 1f;
 
     private float timer = 0f;
     private bool movingForward = true;
@@ -26,6 +26,19 @@ public class Platform : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        switch (platformType)
+        {
+            case PlatformType.Moving:
+                break;
+
+            case PlatformType.Rotating:
+                RotatePlatform();
+                break;
+
+            case PlatformType.Damaging:
+                RotatePlatform();
+                break;
+        }
     }
 
     void Update()
@@ -47,19 +60,7 @@ public class Platform : MonoBehaviour
 
     void FixedUpdate()
     {
-        switch (platformType)
-        {
-            case PlatformType.Moving:
-                break;
-
-            case PlatformType.Rotating:
-                RotatePlatform();
-                break;
-
-            case PlatformType.Damaging:
-                RotatePlatform();
-                break;
-        }
+       
     }
 
     void MovePlatform()
