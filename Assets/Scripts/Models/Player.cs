@@ -9,8 +9,7 @@ public class Player : MonoBehaviour
     public float jumpForce = 6f;
     private Rigidbody rb;
     private GroundStatus groundStatus = GroundStatus.NotGrounded;
-    [SerializeField] AudioClip coinSound;
-    [SerializeField] AudioManager manager;
+
 
     private Transform cameraTransform;
 

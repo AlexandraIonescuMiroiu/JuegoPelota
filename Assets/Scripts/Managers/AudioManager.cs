@@ -4,28 +4,13 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-
-
   [SerializeField] AudioSource sfx;
-  void Start()
+
+  [SerializeField] AudioClip coindSound;
+
+  public void PlayCoindSound()
   {
-
+    Debug.Log("suena");
+    sfx.PlayOneShot(coindSound);
   }
-
-
-  void Update()
-  {
-
-  }
-
-  public void ReproducirSonido(AudioClip clip)
-  {
-    sfx.PlayOneShot(clip);
-    //Ejecuta el clip introducido por parametro de entrada
-
-
-  }
-
-
-
 }

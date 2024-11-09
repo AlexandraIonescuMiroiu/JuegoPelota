@@ -46,6 +46,8 @@ public class HealthManager : MonoBehaviour
     private void ShowGameOver()
     {
         life = 0;
+        CollecionableManager.Instance.ResetCollectibles();
+        CollecionableManager.Instance.UpdateCollectibleText();
         UpdateLifeText();
         gameOverPanel.SetActive(true);
         Time.timeScale = 0;
