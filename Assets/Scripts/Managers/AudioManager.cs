@@ -10,7 +10,6 @@ public class AudioManager : MonoBehaviour
 
   public void PlayCoindSound()
   {
-    Debug.Log("suena");
     sfx.PlayOneShot(coindSound);
   }
 }

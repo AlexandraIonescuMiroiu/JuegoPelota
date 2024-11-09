@@ -1,6 +1,8 @@
 using System.Collections;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
+
 
 public class HealthManager : MonoBehaviour
 {
@@ -10,6 +12,7 @@ public class HealthManager : MonoBehaviour
     [SerializeField] private Transform player;
 
     [SerializeField] private GameObject gameOverPanel;
+    [SerializeField] private GameObject winPanel;
 
     private void Awake()
     {
@@ -43,23 +46,24 @@ public class HealthManager : MonoBehaviour
         }
     }
 
-    private void ShowGameOver()
+    public void ShowGameOver()
     {
         life = 0;
-        CollecionableManager.Instance.ResetCollectibles();
-        CollecionableManager.Instance.UpdateCollectibleText();
         UpdateLifeText();
         gameOverPanel.SetActive(true);
         Time.timeScale = 0;
     }
 
-    public void ResetLife()
+    public void Reset()
     {
         life = 3;
         UpdateLifeText();
+        CollecionableManager.Instance.ResetCollectibles();
+        CollecionableManager.Instance.UpdateCollectibleText();
         CheckpointManager.Instance.TeleportToCheckpoint(player.transform);
 
         gameOverPanel.SetActive(false);
+        winPanel.SetActive(false);
         Time.timeScale = 1;
     }
 

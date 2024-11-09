@@ -8,6 +8,7 @@ TagManager:
   - Ground
   - FallGround
   - Damage
+  - WinWall
   layers:
   - Default
   - TransparentFX

@@ -6,10 +6,8 @@ public class CollecionableManager : MonoBehaviour
 {
     public static CollecionableManager Instance { get; private set; }
     private int collecionableCounter = 0;
+    [SerializeField] private int collectiblesToWin = 3;
     [SerializeField] private TMP_Text collectibleTextCounter;
-
-    [SerializeField] private TMP_Text CollecionableCounter;
-
     private AudioManager audioManager;
 
 
@@ -38,14 +36,12 @@ public class CollecionableManager : MonoBehaviour
             audioManager.PlayCoindSound();
             Destroy(other.gameObject);
             collecionableCounter++;
-            CollecionableCounter.text = collecionableCounter.ToString();
-            Debug.Log(collecionableCounter);
+            collectibleTextCounter.text = collecionableCounter.ToString();
         }
     }
     public void ResetCollectibles()
     {
         collecionableCounter = 0;
-
     }
     public void UpdateCollectibleText()
     {
@@ -53,5 +49,15 @@ public class CollecionableManager : MonoBehaviour
         {
             collectibleTextCounter.text = collecionableCounter.ToString();
         }
+    }
+
+    public int GetCollectiblesToWin()
+    {
+        return collectiblesToWin;
+    }
+
+    public int GetActualCollectibles()
+    {
+        return collecionableCounter;
     }
 }
