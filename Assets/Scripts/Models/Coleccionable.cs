@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Coleccionable : MonoBehaviour
+public class Coleccionable : MonoBehaviour, IResettable
 {
     public float velocidadRotacionX = -40f;
     public float velocidadRotacionY = 30f;
@@ -14,6 +14,11 @@ public class Coleccionable : MonoBehaviour
     // Debemos empezar en 0 -> SIEMPRE
     private float tiempoPasado = 0f;
     private float posicionInicialY;
+    private Vector3 initialPosition;
+    private void Awake()
+    {
+        initialPosition = transform.localPosition;
+    }
 
     void Start()
     {
@@ -21,9 +26,15 @@ public class Coleccionable : MonoBehaviour
         posicionInicialY = transform.position.y;
     }
 
+    public void ResetPosition()
+    {
+        gameObject.SetActive(true);
+        transform.localPosition = initialPosition;
+    }
+
     void Update()
     {
-        // NUNCA NORMALIZAR EL VECTOR ya que cada EJE tienen dirección y velocidad independientes.
+        // NUNCA NORMALIZAR EL VECTOR ya que cada EJE tienen direcciï¿½n y velocidad independientes.
         transform.Rotate(new Vector3(velocidadRotacionX, velocidadRotacionY, velocidadRotacionZ) * Time.deltaTime);
 
         tiempoPasado += Time.deltaTime;

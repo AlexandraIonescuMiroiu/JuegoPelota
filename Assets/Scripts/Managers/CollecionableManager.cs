@@ -27,6 +27,7 @@ public class CollecionableManager : MonoBehaviour
     private void Start()
     {
         audioManager = FindObjectOfType<AudioManager>();
+        UpdateCollectibleText();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -34,20 +35,22 @@ public class CollecionableManager : MonoBehaviour
         if (other.gameObject.CompareTag("Coleccionable"))
         {
             audioManager.PlayCoindSound();
-            Destroy(other.gameObject);
-            collecionableCounter++;
-            collectibleTextCounter.text = collecionableCounter.ToString();
+            other.gameObject.SetActive(false); collecionableCounter++;
+            collectibleTextCounter.text = collecionableCounter.ToString() + " / " + collectiblesToWin;
         }
     }
+
     public void ResetCollectibles()
     {
         collecionableCounter = 0;
+        UpdateCollectibleText();
     }
+
     public void UpdateCollectibleText()
     {
         if (collectibleTextCounter != null)
         {
-            collectibleTextCounter.text = collecionableCounter.ToString();
+            collectibleTextCounter.text = collecionableCounter.ToString() + " / " + collectiblesToWin;
         }
     }
 

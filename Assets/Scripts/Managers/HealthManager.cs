@@ -7,12 +7,11 @@ using UnityEngine.SceneManagement;
 public class HealthManager : MonoBehaviour
 {
     public static HealthManager Instance { get; private set; }
-    [SerializeField] private int life = 3;
+    [SerializeField] private int maxLife;
     [SerializeField] private TMP_Text lifeTextCounter;
-    [SerializeField] private Transform player;
-
     [SerializeField] private GameObject gameOverPanel;
-    [SerializeField] private GameObject winPanel;
+
+    private int life;
 
     private void Awake()
     {
@@ -29,8 +28,25 @@ public class HealthManager : MonoBehaviour
 
     private void Start()
     {
+        life = maxLife;
         UpdateLifeText();
         gameOverPanel.SetActive(false);
+    }
+
+    public int GetLife()
+    {
+        return life;
+    }
+
+    public void SetLife(int life)
+    {
+        this.life = life;
+    }
+
+    public void ResetLife()
+    {
+        SetLife(maxLife);
+        UpdateLifeText();
     }
 
     public void PlayerHit()
@@ -42,36 +58,17 @@ public class HealthManager : MonoBehaviour
         }
         else
         {
-            ShowGameOver();
+            SetLife(0);
+            UpdateLifeText();
+            GameManager.Instance.ShowGameOver();
         }
     }
 
-    public void ShowGameOver()
-    {
-        life = 0;
-        UpdateLifeText();
-        gameOverPanel.SetActive(true);
-        Time.timeScale = 0;
-    }
-
-    public void Reset()
-    {
-        life = 3;
-        UpdateLifeText();
-        CollecionableManager.Instance.ResetCollectibles();
-        CollecionableManager.Instance.UpdateCollectibleText();
-        CheckpointManager.Instance.TeleportToCheckpoint(player.transform);
-
-        gameOverPanel.SetActive(false);
-        winPanel.SetActive(false);
-        Time.timeScale = 1;
-    }
-
-    private void UpdateLifeText()
+    public void UpdateLifeText()
     {
         if (lifeTextCounter != null)
         {
-            lifeTextCounter.text = life.ToString();
+            lifeTextCounter.text = life.ToString() + " / " + maxLife.ToString();
         }
     }
 }

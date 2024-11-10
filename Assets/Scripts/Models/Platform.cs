@@ -23,6 +23,9 @@ public class Platform : MonoBehaviour
     private bool movingForward = true;
     private Rigidbody rb;
 
+    private float rotationTimer = 0f;
+    private float rotationInterval = 17f;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -30,11 +33,9 @@ public class Platform : MonoBehaviour
         {
             case PlatformType.Moving:
                 break;
-
             case PlatformType.Rotating:
                 RotatePlatform();
                 break;
-
             case PlatformType.Damaging:
                 RotatePlatform();
                 break;
@@ -48,10 +49,8 @@ public class Platform : MonoBehaviour
             case PlatformType.Moving:
                 MovePlatform();
                 break;
-
             case PlatformType.Rotating:
                 break;
-
             case PlatformType.Damaging:
                 MovePlatform();
                 break;
@@ -60,7 +59,16 @@ public class Platform : MonoBehaviour
 
     void FixedUpdate()
     {
-       
+        if (platformType == PlatformType.Rotating || platformType == PlatformType.Damaging)
+        {
+            rotationTimer += Time.fixedDeltaTime;
+
+            if (rotationTimer >= rotationInterval)
+            {
+                RotatePlatform();
+                rotationTimer = 0f;
+            }
+        }
     }
 
     void MovePlatform()
